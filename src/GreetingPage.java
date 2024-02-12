@@ -30,6 +30,7 @@ public class GreetingPage {
             case 4: System.out.println(firstName + " " + surname + " you've got this!");
         }
         System.out.println("Thanks for taking part in 'The Programme'. Goodbye.");
+        scanner.close();
 
 
     }
