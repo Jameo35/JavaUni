@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GreetingPage {
@@ -19,8 +20,17 @@ public class GreetingPage {
         System.out.println("\nWithin the programme you can navigate to four areas...\nOption 1: See your full name." +
                 "\nOption 2: Reminder of where you work.\nOption 3: See how many years you have left until retirement." +
                 "\nOption 4: Hear some personalised words of encouragement.\nPlease enter a number to navigate to the desired area.");
+        outerloop:
         while(true){
-            int navigationChoice = scanner.nextInt();
+            int navigationChoice = 0;   
+            do {
+                try {
+                    navigationChoice = scanner.nextInt();
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid Menu choice, please use an integer.");
+                }
+                scanner.nextLine();
+            } while (navigationChoice <=0);         
             if (navigationChoice < 5 && navigationChoice > 0){
                 switch (navigationChoice){
                     case 1: System.out.println("Congratulations " + firstName + " " + surname + " you've selected option 1");
@@ -31,11 +41,17 @@ public class GreetingPage {
                     break;
                     case 4: System.out.println(firstName + " " + surname + " you've got this!");
                 }
-                scanner.nextLine();
-                System.out.println("Would you like to continue?  Y/N");
-                String continueOption = scanner.nextLine();
-                if ((continueOption.equals("N")) || (continueOption.equals("n"))){
-                    break;
+                while (true){
+                    System.out.println("Would you like to continue?  Y/N");
+                    String continueOption = scanner.nextLine();
+                    if ((continueOption.equals("N")) || (continueOption.equals("n"))){
+                        break outerloop;
+                    } else if ((continueOption.equals("Y")) || (continueOption.equals("y"))){
+                        System.out.println("Please choose a menu option");
+                        break;
+                    } else{
+                        System.out.println("Please choose a valid continue option");
+                    }
                 }
             }else{
                 System.out.println("Please choose a valid menu option");
