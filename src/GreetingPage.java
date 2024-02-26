@@ -19,19 +19,30 @@ public class GreetingPage {
         System.out.println("\nWithin the programme you can navigate to four areas...\nOption 1: See your full name." +
                 "\nOption 2: Reminder of where you work.\nOption 3: See how many years you have left until retirement." +
                 "\nOption 4: Hear some personalised words of encouragement.\nPlease enter a number to navigate to the desired area.");
-        int navigationChoice = scanner.nextInt();
-        switch (navigationChoice){
-            case 1: System.out.println("Congratulations " + firstName + " " + surname + " you've selected option 1");
-            break;
-            case 2: System.out.println("You need to be reminded of this?! You work at " + companyName);
-            break;
-            case 3: System.out.println("Still got a few years left to go! Most people work for an average of 40 years, you have " + (40 - yearsAtCompany) + " years to go, enjoy!");
-            break;
-            case 4: System.out.println(firstName + " " + surname + " you've got this!");
+        while(true){
+            int navigationChoice = scanner.nextInt();
+            if (navigationChoice < 5 && navigationChoice > 0){
+                switch (navigationChoice){
+                    case 1: System.out.println("Congratulations " + firstName + " " + surname + " you've selected option 1");
+                    break;
+                    case 2: System.out.println("You need to be reminded of this?! You work at " + companyName);
+                    break;
+                    case 3: System.out.println("Still got a few years left to go! Most people work for an average of 40 years, you have " + (40 - yearsAtCompany) + " years to go, enjoy!");
+                    break;
+                    case 4: System.out.println(firstName + " " + surname + " you've got this!");
+                }
+                scanner.nextLine();
+                System.out.println("Would you like to continue?  Y/N");
+                String continueOption = scanner.nextLine();
+                if ((continueOption.equals("N")) || (continueOption.equals("n"))){
+                    break;
+                }
+            }else{
+                System.out.println("Please choose a valid menu option");
+            }
+
         }
         System.out.println("Thanks for taking part in 'The Programme'. Goodbye.");
         scanner.close();
-
-
     }
 }
