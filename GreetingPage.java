@@ -23,17 +23,13 @@ public class GreetingPage {
         outerloop:
         while(true){
             int navigationChoice = 0;   
-            do {
-                try {
-                    navigationChoice = scanner.nextInt();
-                    if (navigationChoice < 1){
-                        System.out.println("Please enter a valid menu option");
-                    }
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid Menu choice, please use type integer.");
+            try {
+                navigationChoice = scanner.nextInt();
                 }
-                scanner.nextLine();
-            } while (navigationChoice <=0);         
+            catch (InputMismatchException e) {
+                System.out.println("Invalid Menu choice, please use type integer.");
+                }
+                scanner.nextLine();        
             if (navigationChoice < 5 && navigationChoice > 0){
                 switch (navigationChoice){
                     case 1: System.out.println("Congratulations " + firstName + " " + surname + " you've selected option 1");
