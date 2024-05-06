@@ -1,7 +1,10 @@
+package SystemUtilities;
+
 import RoomTypes.DeluxeRoomType;
 import RoomTypes.RoomType;
 import RoomTypes.SuperiorRoomType;
 import RoomTypes.ValueRoomType;
+import System_Run.Trip;
 
 import java.io.*;
 import java.text.ParseException;
@@ -168,21 +171,21 @@ public class Utilities {
         switch (option) {
             case 1:
                 System.out.println("You have selected a Value room, now to choose a bed");
-                _roomType = new RoomTypes.ValueRoomType();
+                _roomType = new ValueRoomType();
                 trip.SetRoomType(_roomType);
                 System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed");
                 trip.SetBedOption(_roomType.roomOption());
                 break;
             case 2:
                 System.out.println("You have selected a Deluxe room, now to choose a bed");
-                _roomType = new RoomTypes.DeluxeRoomType();
+                _roomType = new DeluxeRoomType();
                 trip.SetRoomType(_roomType);
                 System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed | 4. Queen Bed");
                 trip.SetBedOption(_roomType.roomOption());
                 break;
             case 3:
                 System.out.println("You have selected a Superior room, now to choose a bed");
-                _roomType = new RoomTypes.SuperiorRoomType();
+                _roomType = new SuperiorRoomType();
                 trip.SetRoomType(_roomType);
                 System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed | 4. Queen Bed | 5. King Bed");
                 trip.SetBedOption(_roomType.roomOption());
