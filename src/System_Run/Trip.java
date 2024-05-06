@@ -19,11 +19,12 @@ public class Trip {
     private int _bookingRef;
     private String _firstname = "", _surname = "", _checkIn = "", _checkOut = "";
 
-    private static int _checkedDays;
+    private int _checkedDays;
 
-    private static RoomType _roomType;
+    private RoomType _roomType;
 
-    private static String _bedOption;
+    private String _bedOption;
+    private double _price;
     private Scanner scanner = new Scanner(System.in);
 
     //Getters and setters. These allow the retrieval/getting of object information and the updating/setting of the associated variables for an object.
@@ -59,6 +60,8 @@ public class Trip {
         return _bedOption;
     }
 
+    public double GetPrice(){return _price;}
+
     public void SetBookingRef(int bookingRef) {
         _bookingRef = bookingRef;
     }
@@ -90,6 +93,8 @@ public class Trip {
     public void SetBedOption(String bedOption) {
         _bedOption = bedOption;
     }
+
+    public void SetPrice(Double price){_price = price;}
     //Getters and Setters now created.
 
 
@@ -113,7 +118,7 @@ public class Trip {
     /* The CreateTrip method allows the user to navigate through the trip creation journey.
     This makes use of the scanner class so the user is able to input the desired information into each step of the way.
      */
-    public void CreateTrip() throws ParseException {
+    protected void CreateTrip() throws ParseException {
         System.out.println("Please enter your first name:");
         _firstname = scanner.nextLine();
 
@@ -146,7 +151,12 @@ public class Trip {
         //Invokes the RoomSelection method.
         Utilities.RoomSelection(this);
 
+        //Invokes the Price Calculation for the trip.
+        SetPrice(Utilities.PriceCalculator(this));
+
+
         while (true) {
+            System.out.println(GetPrice());
             System.out.println("These are the inputted details we have collected. Can you confirm they are correct? Y/N");
             Utilities.EchoDetails(this);
             String input = scanner.nextLine().toLowerCase();
@@ -164,8 +174,8 @@ public class Trip {
 
     }
 
-    public void ChangeTrip() {
-        //Labelled loop to break out of the switch statement
+    protected void ChangeTrip() {
+        //Labelled loop as loop to break out of the switch statement
         loop:
         while (true) {
             System.out.println("What changes would you like to make on the trip? Please choose from the options below");
@@ -220,6 +230,7 @@ public class Trip {
             }
 
         }
+        //This calls the write method again, and updates any user changes.
         Utilities.WriteTripToFile(this);
     }
 

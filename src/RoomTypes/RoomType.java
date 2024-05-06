@@ -15,7 +15,6 @@ public class RoomType {
         while (true) {
             try {
                 roomOption = scanner.nextInt();
-                scanner.nextLine();
                 break;
             } catch (InputMismatchException e) {
                 System.err.println("Please select a valid integer");

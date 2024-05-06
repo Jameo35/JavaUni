@@ -12,23 +12,22 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 //SystemUtilities.Utilities to capture the associated methods that are commonly used throughout the programme.
 public class Utilities {
 
     //File Directory stored as a final variable as do not want it to be changed via any method.
-    public static final String DIRECTORY_BANK_ACCOUNTS = "src" + File.separator + "TripBookings";
+    private static final String DIRECTORY_BANK_ACCOUNTS = "src" + File.separator + "TripBookings";
 
     /*Usage of String Array Variables to use in other methods/be called on within the programme.
     This creates a single place of modification for the string to be modified and changes to be applied across the programme.
      */
-    public static String[] roomTypes = new String[]{"1. Value","2. Deluxe","3. Superior"};
-    public static String[] bedOptions = new String[]{"1. Single","2. Twin","3. Double","4. Queen","5. King"};
+    private static final String[] roomTypes = new String[]{"1. Value","2. Deluxe","3. Superior"};
+    private static final String[] bedOptions = new String[]{"1. Single","2. Twin","3. Double","4. Queen","5. King"};
+
+    private static final int[] premiumMonths = {12,1,6,7,8};
 
 
 
@@ -187,11 +186,40 @@ public class Utilities {
                 System.out.println("You have selected a Superior room, now to choose a bed");
                 _roomType = new SuperiorRoomType();
                 trip.SetRoomType(_roomType);
-                System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed | 4. Queen Bed | 5. King Bed");
+                System.out.println("Please select from " + Arrays.toString(bedOptions));
                 trip.SetBedOption(_roomType.roomOption());
                 break;
 
         }
+    }
+    /*New Method to calculate price depending on if the month is a member of the premiumMonths array.
+    This method iterates through the list and compares the checkInMonth variable from the trip object
+    depending on whether the month is a 'premium' month there is different pricing logic. The function returns a double
+    as prices can be shown in pounds and pence, not integer values.
+     */
+
+    public static double PriceCalculator(Trip trip){
+        int length = trip.GetCheckedDays();
+        double price = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date checkInDate = sdf.parse(trip.GetCheckIn());
+            int checkInMonth = checkInDate.getMonth() + 1;
+            for (int month : premiumMonths) {
+                if (month == checkInMonth){
+                    price = length * 135.23;
+                    break;
+                } else
+                {
+                    price = length * 110;
+                }
+            }
+
+        } catch (ParseException e)
+        {
+            System.err.println("Invalid Check In Date");
+        }
+        return price;
     }
 
 
