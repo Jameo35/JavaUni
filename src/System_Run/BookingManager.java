@@ -9,7 +9,6 @@ import SystemUtilities.Utilities;
 
 public class BookingManager {
     //Initialising the scanner, this allows the user to interact with the programme via the command line, throughout the programme the user will be prompted to enter information.
-    Scanner scanner = new Scanner(System.in);
 
     //Primary Method to create a System_Run.Trip object, either a new trip, or manage an existing trip, this subsequently creates a new trip object called foundBooking
     public void manageBooking() throws ParseException {
@@ -18,7 +17,8 @@ public class BookingManager {
         while (true) {
             System.out.println("Would you like to Book a new trip? (N) or Change an existing booking? (C). Alternatively enter Q to exit the System");
             //The string input is commonly converted into a lowercase option, this helps to handle errors and reduce the amount of options required in a conditional logic tree. Halving potential outcomes.
-            String option = scanner.nextLine().toLowerCase();
+            String option = Booking.scanner.nextLine().toLowerCase();
+
 
             if (option.equals("n")) {
                 Trip trip = new Trip();
@@ -28,8 +28,8 @@ public class BookingManager {
                 System.out.println("Please enter the booking reference you wish to access the details of:");
 
                 try {
-                    int BookingRef = scanner.nextInt();
-                    scanner.nextLine();
+                    int BookingRef = Booking.scanner.nextInt();
+                    Booking.scanner.nextLine();
 
                     if (BookingRef < 100000)
                         throw new InvalidBookingRefException("Booking Reference was less than 100000 please try again with another Reference. System_Run.Booking Ref: ", BookingRef);
@@ -50,7 +50,7 @@ public class BookingManager {
                     Utilities.echoDetails(foundBooking);
                     while (true) {
                         System.out.println("Would you like to make any changes to these details? Y/N");
-                        String changes = scanner.nextLine().toLowerCase();
+                        String changes = Booking.scanner.nextLine().toLowerCase();
                         if (changes.equals("y")) {
                             foundBooking.changeTrip();
                             break;
@@ -63,7 +63,7 @@ public class BookingManager {
                     }
                 } catch (InputMismatchException e) {
                     System.err.println("Please enter a valid integer for the Booking Reference.");
-                    scanner.nextLine();
+                    Booking.scanner.nextLine();
                 } catch (InvalidBookingRefException e) {
                     System.err.println(e.getMessage());
                 }

@@ -5,6 +5,7 @@ import RoomTypes.DeluxeRoomType;
 import RoomTypes.RoomType;
 import RoomTypes.SuperiorRoomType;
 import RoomTypes.ValueRoomType;
+import System_Run.Booking;
 import System_Run.Trip;
 
 import java.io.*;
@@ -34,12 +35,11 @@ public class Utilities {
 
     //Method to help customer to select dates in required formatting, takes user input and a try-catch method to avoid input mismatches.
     public static String dateSelector() {
-        Scanner scanner = new Scanner(System.in);
         LocalDate date;
             try {
-                int checkInDay = scanner.nextInt();
-                int checkInMonth = scanner.nextInt();
-                int checkInYear = scanner.nextInt();
+                int checkInDay = Booking.scanner.nextInt();
+                int checkInMonth = Booking.scanner.nextInt();
+                int checkInYear = Booking.scanner.nextInt();
                 if (checkInMonth < 10 && checkInDay < 10) {
                     date = LocalDate.parse(checkInYear + "-0" + checkInMonth + "-0" + checkInDay);
                 } else if (checkInMonth < 10) {
@@ -55,7 +55,7 @@ public class Utilities {
             catch (InputMismatchException e)
             {
                 System.err.println("Please enter the date in the specified format DD MM YYYY.");
-                scanner.nextLine();
+                Booking.scanner.nextLine();
                 return null;
             } catch (DateTimeParseException | NullPointerException e)
             {
@@ -88,7 +88,7 @@ public class Utilities {
 
     //Class used to play-back user details gathered via the trip object.
     public static void echoDetails(Trip trip){
-        System.out.println("System_Run.Booking Ref: " + trip.GetBookingRef());
+        System.out.println("Booking Ref: " + trip.GetBookingRef());
         System.out.println("First Name: " + trip.GetFirstname());
         System.out.println("Last Name: " + trip.GetSurname());
         System.out.println("Check In Date: " + trip.GetCheckIn());
@@ -169,9 +169,8 @@ public class Utilities {
     }
     public static void roomSelection(Trip trip) {
         System.out.println("What room would you like to choose?\n" + Arrays.toString(roomTypes));
-        Scanner scanner = new Scanner(System.in);
-        int option = scanner.nextInt();
-        scanner.nextLine();
+        int option = Booking.scanner.nextInt();
+        Booking.scanner.nextLine();
         RoomType _roomType;
 
         switch (option) {

@@ -1,5 +1,7 @@
 package RoomTypes;
 
+import System_Run.Booking;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,17 +10,16 @@ public class RoomType {
 
     protected String bedOption;
 
-    protected Scanner scanner = new Scanner(System.in);
 
 
     public String roomOption() {
         while (true) {
             try {
-                roomOption = scanner.nextInt();
+                roomOption = Booking.scanner.nextInt();
                 break;
             } catch (InputMismatchException e) {
                 System.err.println("Please select a valid integer");
-                scanner.nextLine();
+                Booking.scanner.nextLine();
             }
         }
 
@@ -42,7 +43,7 @@ public class RoomType {
 
             } else {
                 System.out.println("Please select a valid option");
-                roomOption = scanner.nextInt();
+                roomOption = Booking.scanner.nextInt();
             }
 
         }
