@@ -20,8 +20,9 @@ public class BookingManager {
             //The string input is commonly converted into a lowercase option, this helps to handle errors and reduce the amount of options required in a conditional logic tree. Halving potential outcomes.
             String option = scanner.nextLine().toLowerCase();
 
-
+            //Conditional statement for user menu choices.
             if (option.equals("n")) {
+                //Creates a new trip and calls the create trip function to populate attributes.
                 Trip trip = new Trip();
                 trip.createTrip();
 
@@ -29,9 +30,10 @@ public class BookingManager {
                 System.out.println("Please enter the booking reference you wish to access the details of:");
 
                 try {
+                    //Takes user input for a booking reference which then searches for the appropriate file.
                     int BookingRef = scanner.nextInt();
                     scanner.nextLine();
-
+                    //ensures booking reference is in acceptable range, custom error handling used to relay information to user upon encountering any errors.
                     if (BookingRef < 100000)
                         throw new InvalidBookingRefException("Booking Reference was less than 100000 please try again with another Reference. System_Run.Booking Ref: ", BookingRef);
                     else if (BookingRef > 999999)
@@ -48,6 +50,7 @@ public class BookingManager {
 
 
                     System.out.println("Booking Found with details: ");
+                    //Call to echoDetails function which relays object information back to user.
                     Utilities.echoDetails(foundBooking);
                     while (true) {
                         System.out.println("Would you like to make any changes to these details? Y/N");

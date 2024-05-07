@@ -19,7 +19,7 @@ public class TestingClass extends Utilities {
     private static int[] readFileTestCases = new int[]{235768, 123542, 1, 238679};
 
     //Test cases for room selection to include the boundary values and enable Boundary Value Analysis testing method.
-    private static String[] roomOptionTestCases = new String[]{"0", "1", "2", "3", "4", "5"};
+    private static String[] roomOptionTestCases = new String[]{"0", "1", "2", "3", "4", "L"};
     //Test cases for Input check function within the RoomType class.
     private static int[] roomTypeInputCheckTestCases = new int[]{0, 1, 2, 3, 4, 5};
 
@@ -325,6 +325,7 @@ public class TestingClass extends Utilities {
         }
     }
 
+    //Tests to .toString() function for each roomtype and compares to expected response
     public static void roomTypeToStringTest(int roomTypeTest) {
         switch (roomTypeTest) {
             case 1:
@@ -365,7 +366,7 @@ public class TestingClass extends Utilities {
                 break;
         }
     }
-
+    //Ensures the input cleansing of the associated roomTypes
     public static void roomTypeInputCheckTest(int roomTypeTest) {
         switch (roomTypeTest) {
             case 1:
@@ -476,7 +477,7 @@ public class TestingClass extends Utilities {
         }catch(NoSuchElementException e){
             System.setOut(originalStream);
             if (testTrip.GetFirstname().equals("James") && (testTrip.GetSurname().equals("Hirst"))) {
-                System.out.println("Test Passed for test data:\n" + testData + "Please see below how the details are stored in the trip object, using the filename " + testTrip.GetBookingRef() + ".txt");
+                System.out.println("Test Passed for test data:\n" + testData + "Please see below how the details are stored in the trip object");
                 Utilities.echoDetails(testTrip);
             } else {
                 System.out.println("Test Failed for test data: " + testData);

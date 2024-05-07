@@ -12,7 +12,7 @@ import java.util.Scanner;
 //Creation of the trip class, which holds customer details denoted by private variables.
 public class Trip {
     Scanner scanner = new Scanner(System.in);
-
+    //Declaring the variables/attributes of the Trip class
     private int _bookingRef;
     private String _firstname = "", _surname = "", _checkIn = "", _checkOut = "";
 
@@ -80,7 +80,7 @@ public class Trip {
         _checkOut = checkOut;
     }
 
-    public void SetCheckedDays(int checkedDays) {
+    public void SetCheckedDays(Integer checkedDays) {
         _checkedDays = checkedDays;
     }
 
@@ -156,7 +156,7 @@ public class Trip {
         //Invokes the Price Calculation for the trip.
         SetPrice(Utilities.priceCalculator(this));
 
-
+        //Creates loop in order to provide user with the opportunity to change details
         while (true) {
             System.out.println("The total cost of the booking is: " + GetPrice());
             System.out.println("These are the inputted details we have collected. Can you confirm they are correct? Y/N");
@@ -176,7 +176,7 @@ public class Trip {
     }
 
     protected void changeTrip() {
-        //Labelled loop as loop to break out of the switch statement
+        //Labelled loop as loop to break out of the switch statement on case 6.
         loop:
         while (true) {
             System.out.println("What changes would you like to make on the trip? Please choose from the options below");
@@ -233,6 +233,7 @@ public class Trip {
                 } else {
                     System.out.println("Please select a valid Menu Option");
                 }
+                //DateDifference can throw a ParseException, this has been error handled so it is ignored.
             } catch (ParseException ignore) {
             }
 

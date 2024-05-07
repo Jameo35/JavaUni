@@ -72,19 +72,21 @@ public class Utilities {
             long difference_In_Time
                     = checkOutDate.getTime() - checkInDate.getTime();
             int dayDifference = (int) TimeUnit.MILLISECONDS.toDays(difference_In_Time) % 365;
-            trip.SetCheckedDays(dayDifference);
             if (dayDifference < 0) {
+                trip.SetCheckedDays(dayDifference);
                 throw new InvalidDateCombinationException();
+            } else {
+                trip.SetCheckedDays(dayDifference);
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
         } catch (InvalidDateCombinationException e) {
-            System.err.println("Please change the trip dates using the change existing booking function as these dates are invalid");
+            System.err.println("Please change the trip dates using the change existing booking function as these dates are invalid when confirming the details please select \"N\" and change the dates");
         }
 
     }
 
-    //Class used to play-back user details gathered via the trip object.
+    //Method used to play-back user details gathered via the trip object.
     public static void echoDetails(Trip trip) {
         System.out.println("Booking Ref: " + trip.GetBookingRef());
         System.out.println("First Name: " + trip.GetFirstname());
@@ -96,7 +98,7 @@ public class Utilities {
         System.out.println("Bed Option: " + trip.GetBedOption());
     }
 
-    //Utility class to write a trip object to an output file. If the parent directory doesn't exist, this method will create the directory.
+    //Utility method to write a trip object to an output file. If the parent directory doesn't exist, this method will create the directory.
     public static void writeTripToFile(Trip trip) {
         String filePath = trip.GetBookingRef() + ".txt";
         File file = new File(DIRECTORY_BANK_ACCOUNTS, filePath);
@@ -123,7 +125,7 @@ public class Utilities {
         }
     }
 
-    //Utility class to consume information from an output file in the TripBookings folder, this will then create a Trip object with the associated details.
+    //Utility method to consume information from an output file in the TripBookings folder, this will then create a Trip object with the associated details.
     public static Trip readTripData(int BookingRef) {
         String filePath = DIRECTORY_BANK_ACCOUNTS + File.separator + BookingRef + ".txt";
         File file = new File(filePath);
@@ -161,6 +163,7 @@ public class Utilities {
 
     }
 
+    //Method called from Trip, this is to ensure the correct selection of a room. Which makes use of inheritance and classes.
     public static void roomSelection(Trip trip) {
         RoomType _roomType;
         int option;
@@ -171,9 +174,9 @@ public class Utilities {
 
                 option = scanner.nextInt();
                 scanner.nextLine();
-                if((option < 4) && (option > 0)){
+                if ((option < 4) && (option > 0)) {
                     break;
-                }else{
+                } else {
                     System.err.println("Please select a valid option");
                 }
             } catch (InputMismatchException e) {
@@ -182,32 +185,33 @@ public class Utilities {
             }
         }
 
-                switch (option) {
-                    case 1:
-                        System.out.println("You have selected a Value room, now to choose a bed");
-                        _roomType = new ValueRoomType();
-                        trip.SetRoomType(_roomType);
-                        System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed");
-                        trip.SetBedOption(_roomType.roomOption());
-                        break;
-                    case 2:
-                        System.out.println("You have selected a Deluxe room, now to choose a bed");
-                        _roomType = new DeluxeRoomType();
-                        trip.SetRoomType(_roomType);
-                        System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed | 4. Queen Bed");
-                        trip.SetBedOption(_roomType.roomOption());
-                        break;
-                    case 3:
-                        System.out.println("You have selected a Superior room, now to choose a bed");
-                        _roomType = new SuperiorRoomType();
-                        trip.SetRoomType(_roomType);
-                        System.out.println("Please select from " + Arrays.toString(bedOptions));
-                        trip.SetBedOption(_roomType.roomOption());
-                        break;
-                }
+        switch (option) {
+            case 1:
+                System.out.println("You have selected a Value room, now to choose a bed");
+                _roomType = new ValueRoomType();
+                trip.SetRoomType(_roomType);
+                System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed");
+                trip.SetBedOption(_roomType.roomOption());
+                break;
+            case 2:
+                System.out.println("You have selected a Deluxe room, now to choose a bed");
+                _roomType = new DeluxeRoomType();
+                trip.SetRoomType(_roomType);
+                System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed | 4. Queen Bed");
+                trip.SetBedOption(_roomType.roomOption());
+                break;
+            case 3:
+                System.out.println("You have selected a Superior room, now to choose a bed");
+                _roomType = new SuperiorRoomType();
+                trip.SetRoomType(_roomType);
+                System.out.println("Please select from " + Arrays.toString(bedOptions));
+                trip.SetBedOption(_roomType.roomOption());
+                break;
+        }
 
 
     }
+
     /*New Method to calculate price depending on if the month is a member of the premiumMonths array.
     This method iterates through the list and compares the checkInMonth variable from the trip object
     depending on whether the month is a 'premium' month there is different pricing logic. The function returns a double
@@ -234,10 +238,6 @@ public class Utilities {
             System.err.println("Invalid Check In Date");
         }
         return price;
-    }
-
-    public static boolean inputCheck(int option) {
-        return (option > 0) && (option < 4);
     }
 }
 

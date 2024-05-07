@@ -12,6 +12,7 @@ public class Booking {
         BookingManager bookingManager = new BookingManager();
         bookingManager.manageBooking();
         System.out.println("Thank you for choosing the Hirst Hotel Group.");
+
     }
 
 }

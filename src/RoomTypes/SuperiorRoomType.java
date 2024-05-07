@@ -13,12 +13,13 @@ public class SuperiorRoomType extends DeluxeRoomType {
         }
         return bedOption;
     }
-
+    //Overriden the toString function in order to print the name of the roomType without memory address
     @Override
     public String toString() {
         return "Superior Room";
     }
 
+    //Overriden an inputCheck function to ensure correct input is being passed for roomType
     @Override
     public boolean inputCheck(int option) {
         return (option > 0) && (option < 6);
