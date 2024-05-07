@@ -13,7 +13,7 @@ public class BookingManager {
 
     //Primary Method to create a System_Run.Trip object, either a new trip, or manage an existing trip, this subsequently creates a new trip object called foundBooking
     public void manageBooking() throws ParseException {
-        System.out.println("Hello and welcome to the Hirst Hotel Group System_Run.Booking Management System.");
+        System.out.println("Hello and welcome to the Hirst Hotel Group Booking Management System.");
 
         while (true) {
             System.out.println("Would you like to Book a new trip? (N) or Change an existing booking? (C). Alternatively enter Q to exit the System");
@@ -22,7 +22,7 @@ public class BookingManager {
 
             if (option.equals("n")) {
                 Trip trip = new Trip();
-                trip.CreateTrip();
+                trip.createTrip();
 
             } else if (option.equals("c")) {
                 System.out.println("Please enter the booking reference you wish to access the details of:");
@@ -39,7 +39,7 @@ public class BookingManager {
                     /*This instantiates a Trip object called foundbooking. The ReadTripData function is called, this searches the project's directory.
                     if the .txt file is found in the directory an object is created and populated with data using the object constructor on a line by line basis */
 
-                    Trip foundBooking = Utilities.ReadTripData(BookingRef);
+                    Trip foundBooking = Utilities.readTripData(BookingRef);
 
                     //if the creation of the foundbooking object returns as null. i.e no data found. An exception will be thrown to notify the user that the booking wasn't found.
                     if (foundBooking == null)
@@ -47,12 +47,12 @@ public class BookingManager {
 
 
                     System.out.println("Booking Found with details: ");
-                    Utilities.EchoDetails(foundBooking);
+                    Utilities.echoDetails(foundBooking);
                     while (true) {
                         System.out.println("Would you like to make any changes to these details? Y/N");
                         String changes = scanner.nextLine().toLowerCase();
                         if (changes.equals("y")) {
-                            foundBooking.ChangeTrip();
+                            foundBooking.changeTrip();
                             break;
                         } else if (changes.equals("n")) {
                             System.out.println("No Changes have been made to booking: " + foundBooking.GetBookingRef());
@@ -69,6 +69,7 @@ public class BookingManager {
                 }
 
             } else if (option.equals("q")) {
+                System.out.println("Exiting the programme");
                 break;
             } else {
                 System.out.println("You did not select a valid option, please select an option listed on the Menu.");

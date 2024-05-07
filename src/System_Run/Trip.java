@@ -1,14 +1,9 @@
 package System_Run;
 
-import RoomTypes.DeluxeRoomType;
 import RoomTypes.RoomType;
-import RoomTypes.SuperiorRoomType;
-import RoomTypes.ValueRoomType;
 import SystemUtilities.Utilities;
 
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -60,7 +55,9 @@ public class Trip {
         return _bedOption;
     }
 
-    public double GetPrice(){return _price;}
+    public double GetPrice() {
+        return _price;
+    }
 
     public void SetBookingRef(int bookingRef) {
         _bookingRef = bookingRef;
@@ -94,13 +91,16 @@ public class Trip {
         _bedOption = bedOption;
     }
 
-    public void SetPrice(Double price){_price = price;}
+    public void SetPrice(Double price) {
+        _price = price;
+    }
     //Getters and Setters now created.
 
 
     //This method allows the creation of an empty trip object.
     public Trip() {
     }
+
     /*This method is an object constructor method, outlining a way to construct a Trip object with the required variables as outlined below.
     This method is useful when a user wishes to retrieve an existing booking, and the constructor is used to create the trip object
      */
@@ -115,10 +115,11 @@ public class Trip {
         _bedOption = bedOption;
 
     }
+
     /* The CreateTrip method allows the user to navigate through the trip creation journey.
     This makes use of the scanner class so the user is able to input the desired information into each step of the way.
      */
-    protected void CreateTrip() throws ParseException {
+    protected void createTrip() throws ParseException {
         System.out.println("Please enter your first name:");
         _firstname = scanner.nextLine();
 
@@ -129,7 +130,7 @@ public class Trip {
         //dateSelector method is used to avoid repeated code, and to make the code more repeatable and manageable.
         _checkIn = Utilities.dateSelector();
         //This ensures that the journey does not continue unless the customer's entry creates a satisfactory date entry.
-        while (_checkIn == null){
+        while (_checkIn == null) {
             _checkIn = Utilities.dateSelector();
         }
 
@@ -137,35 +138,35 @@ public class Trip {
         //dateSelector method is used to avoid repeated code, and to make the code more repeatable and manageable.
         _checkOut = Utilities.dateSelector();
         //This ensures that the journey does not continue unless the customer's entry creates a satisfactory date entry.
-        while (_checkOut == null){
+        while (_checkOut == null) {
             _checkOut = Utilities.dateSelector();
         }
 
         //No user interaction required here, background calculations are completed.
-        Utilities.dateDifference(_checkIn, _checkOut,this);
+        Utilities.dateDifference(_checkIn, _checkOut, this);
 
         Random ran = new Random();
         //This ensures that the booking reference is always 6 digits long, for continuity for the customer.
         _bookingRef = ran.nextInt(899999) + 100000;
 
         //Invokes the RoomSelection method.
-        Utilities.RoomSelection(this);
+        Utilities.roomSelection(this);
 
         //Invokes the Price Calculation for the trip.
-        SetPrice(Utilities.PriceCalculator(this));
+        SetPrice(Utilities.priceCalculator(this));
 
 
         while (true) {
-            System.out.println(GetPrice());
+            System.out.println("The total cost of the booking is: " + GetPrice());
             System.out.println("These are the inputted details we have collected. Can you confirm they are correct? Y/N");
-            Utilities.EchoDetails(this);
+            Utilities.echoDetails(this);
             String input = scanner.nextLine().toLowerCase();
             if (input.equals("y")) {
                 System.out.println("Thanks for confirming, the booking details will be sent to you via Email.");
-                Utilities.WriteTripToFile(this);
+                Utilities.writeTripToFile(this);
                 break;
             } else if (input.equals("n")) {
-                ChangeTrip();
+                changeTrip();
 
             } else {
                 System.out.println("Please select either Y or N");
@@ -174,12 +175,12 @@ public class Trip {
 
     }
 
-    protected void ChangeTrip() {
+    protected void changeTrip() {
         //Labelled loop as loop to break out of the switch statement
         loop:
         while (true) {
             System.out.println("What changes would you like to make on the trip? Please choose from the options below");
-            System.out.println("1. First Name, 2. Last Name, 3. Check In Date, 4. Check Out Date, 5. Room Type and Bed Options, 6. No Changes Required");
+            System.out.println("1. First Name, 2. Last Name, 3. Check In Date, 4. Check Out Date, 5. Room Type and Bed Options, 6. No Changes Required/Save Changes Made");
             try {
                 int changeOption = scanner.nextInt();
                 scanner.nextLine();
@@ -197,21 +198,31 @@ public class Trip {
                             break;
                         case 3:
                             System.out.println("Your Check in Date is currently: " + GetCheckIn() + " what would you like to change it to?");
-                            SetCheckIn(Utilities.dateSelector());
+                            String changedCheckIn = Utilities.dateSelector();
+                            while (changedCheckIn == null) {
+                                changedCheckIn = Utilities.dateSelector();
+                            }
+                            SetCheckIn(changedCheckIn);
                             System.out.println("Your Check in Date is now: " + GetCheckIn());
-                            Utilities.dateDifference(GetCheckIn(),GetCheckOut(),this);
+                            Utilities.dateDifference(GetCheckIn(), GetCheckOut(), this);
+                            SetPrice(Utilities.priceCalculator(this));
                             System.out.println("You will now be staying for: " + GetCheckedDays() + " days");
                             break;
                         case 4:
                             System.out.println("Your Check out Date is currently: " + GetCheckOut() + " what would you like to change it to?");
-                            SetCheckOut(Utilities.dateSelector());
+                            String changedCheckOut = Utilities.dateSelector();
+                            while (changedCheckOut == null) {
+                                changedCheckOut = Utilities.dateSelector();
+                            }
+                            SetCheckOut(changedCheckOut);
                             System.out.println("Your Check out Date is now: " + GetCheckOut());
-                            Utilities.dateDifference(GetCheckIn(),GetCheckOut(),this);
+                            Utilities.dateDifference(GetCheckIn(), GetCheckOut(), this);
+                            SetPrice(Utilities.priceCalculator(this));
                             System.out.println("You will now be staying for: " + GetCheckedDays() + " days");
                             break;
                         case 5:
                             System.out.println("Your Room selection is currently: " + GetRoomType() + " you also have the " + GetBedOption() + " selected.");
-                            Utilities.RoomSelection(this);
+                            Utilities.roomSelection(this);
                             System.out.println("Your Room selection is now: " + GetRoomType() + " you have also selected the " + GetBedOption());
                             break;
                         case 6:
@@ -222,18 +233,16 @@ public class Trip {
                 } else {
                     System.out.println("Please select a valid Menu Option");
                 }
-            } catch (InputMismatchException e) {
-                System.err.println("Please enter a valid integer for the Change Menu.");
-                scanner.nextLine();
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
+            } catch (ParseException ignore) {
             }
+
 
         }
         //This calls the write method again, and updates any user changes.
-        Utilities.WriteTripToFile(this);
+        Utilities.writeTripToFile(this);
+
     }
-
-
-
 }
+
+
+

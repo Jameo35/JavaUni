@@ -1,5 +1,6 @@
 package SystemUtilities;
 
+import ExceptionHandling.InvalidDateCombinationException;
 import RoomTypes.DeluxeRoomType;
 import RoomTypes.RoomType;
 import RoomTypes.SuperiorRoomType;
@@ -56,7 +57,7 @@ public class Utilities {
                 System.err.println("Please enter the date in the specified format DD MM YYYY.");
                 scanner.nextLine();
                 return null;
-            } catch (DateTimeParseException e)
+            } catch (DateTimeParseException | NullPointerException e)
             {
                 System.err.println(e.getMessage());
                 System.out.println("Please re-try to enter the booking date to continue the booking process.");
@@ -72,15 +73,21 @@ public class Utilities {
 
             long difference_In_Time
                     = checkOutDate.getTime() - checkInDate.getTime();
-            trip.SetCheckedDays((int) TimeUnit.MILLISECONDS.toDays(difference_In_Time) % 365);
+            int dayDifference = (int) TimeUnit.MILLISECONDS.toDays(difference_In_Time) % 365;
+            trip.SetCheckedDays(dayDifference);
+            if(dayDifference < 0){
+                throw new InvalidDateCombinationException();
+            }
         }catch (ParseException e){
             System.err.println(e.getMessage());
+        }catch (InvalidDateCombinationException e){
+            System.err.println("Please change the trip dates using the change existing booking function as these dates are invalid");
         }
 
     }
 
     //Class used to play-back user details gathered via the trip object.
-    public static void EchoDetails(Trip trip){
+    public static void echoDetails(Trip trip){
         System.out.println("System_Run.Booking Ref: " + trip.GetBookingRef());
         System.out.println("First Name: " + trip.GetFirstname());
         System.out.println("Last Name: " + trip.GetSurname());
@@ -92,7 +99,7 @@ public class Utilities {
     }
 
     //Utility class to write a trip object to an output file. If the parent directory doesn't exist, this method will create the directory.
-    public static void WriteTripToFile(Trip trip){
+    public static void writeTripToFile(Trip trip){
         String filePath = trip.GetBookingRef() + ".txt";
         File file = new File(DIRECTORY_BANK_ACCOUNTS, filePath);
 
@@ -120,7 +127,7 @@ public class Utilities {
         }
     }
     //Utility class to consume information from an output file in the TripBookings folder, this will then create a Trip object with the associated details.
-    public static Trip ReadTripData(int BookingRef){
+    public static Trip readTripData(int BookingRef){
         String filePath = DIRECTORY_BANK_ACCOUNTS + File.separator + BookingRef + ".txt";
         File file = new File(filePath);
         try {
@@ -130,7 +137,7 @@ public class Utilities {
             int bookingRef = Integer.parseInt(bufferedReader.readLine());
             String forename = bufferedReader.readLine();
             String surname = bufferedReader.readLine();
-            String CheckIn = bufferedReader.readLine();
+            String checkIn = bufferedReader.readLine();
             String CheckOut = bufferedReader.readLine();
             int CheckedDays = Integer.parseInt(bufferedReader.readLine());
             String roomTypeFile = bufferedReader.readLine();
@@ -146,7 +153,7 @@ public class Utilities {
             String BedOption = bufferedReader.readLine();
 
             bufferedReader.close();
-            return new Trip(forename, surname, CheckIn, CheckOut, CheckedDays, bookingRef, roomType, BedOption);
+            return new Trip(forename, surname, checkIn, CheckOut, CheckedDays, bookingRef, roomType, BedOption);
         }
         catch(IOException e)
         {
@@ -160,7 +167,7 @@ public class Utilities {
         }
 
     }
-    public static void RoomSelection(Trip trip) {
+    public static void roomSelection(Trip trip) {
         System.out.println("What room would you like to choose?\n" + Arrays.toString(roomTypes));
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -198,7 +205,7 @@ public class Utilities {
     as prices can be shown in pounds and pence, not integer values.
      */
 
-    public static double PriceCalculator(Trip trip){
+    public static double priceCalculator(Trip trip){
         int length = trip.GetCheckedDays();
         double price = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -207,7 +214,7 @@ public class Utilities {
             int checkInMonth = checkInDate.getMonth() + 1;
             for (int month : premiumMonths) {
                 if (month == checkInMonth){
-                    price = length * 135.23;
+                    price = length * 135.5;
                     break;
                 } else
                 {
