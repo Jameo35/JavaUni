@@ -8,8 +8,10 @@ import java.util.Random;
 import java.util.Scanner;
 
 
+
 //Creation of the trip class, which holds customer details denoted by private variables.
 public class Trip {
+    Scanner scanner = new Scanner(System.in);
 
     private int _bookingRef;
     private String _firstname = "", _surname = "", _checkIn = "", _checkOut = "";
@@ -120,10 +122,10 @@ public class Trip {
      this method was intended to be protected, however due to testing reasons have designated it as public */
     public void createTrip() throws ParseException {
         System.out.println("Please enter your first name:");
-        _firstname = Booking.scanner.nextLine();
+        _firstname = scanner.nextLine();
 
         System.out.println("Please enter your surname:");
-        _surname = Booking.scanner.nextLine();
+        _surname = scanner.nextLine();
 
         System.out.println("Please enter your check in date in format DD MM YYYY:");
         //dateSelector method is used to avoid repeated code, and to make the code more repeatable and manageable.
@@ -159,7 +161,7 @@ public class Trip {
             System.out.println("The total cost of the booking is: " + GetPrice());
             System.out.println("These are the inputted details we have collected. Can you confirm they are correct? Y/N");
             Utilities.echoDetails(this);
-            String input = Booking.scanner.nextLine().toLowerCase();
+            String input = scanner.nextLine().toLowerCase();
             if (input.equals("y")) {
                 System.out.println("Thanks for confirming, the booking details will be sent to you via Email.");
                 Utilities.writeTripToFile(this);
@@ -171,7 +173,6 @@ public class Trip {
                 System.out.println("Please select either Y or N");
             }
         }
-
     }
 
     protected void changeTrip() {
@@ -181,18 +182,18 @@ public class Trip {
             System.out.println("What changes would you like to make on the trip? Please choose from the options below");
             System.out.println("1. First Name, 2. Last Name, 3. Check In Date, 4. Check Out Date, 5. Room Type and Bed Options, 6. No Changes Required/Save Changes Made");
             try {
-                int changeOption = Booking.scanner.nextInt();
-                Booking.scanner.nextLine();
+                int changeOption = scanner.nextInt();
+                scanner.nextLine();
                 if ((changeOption > 0) && (changeOption < 7)) {
                     switch (changeOption) {
                         case 1:
                             System.out.println("Your First Name currently reads: " + GetFirstname() + " what would you like to change it to?");
-                            SetForename(Booking.scanner.nextLine());
+                            SetForename(scanner.nextLine());
                             System.out.println("Your First Name now reads as: " + GetFirstname());
                             break;
                         case 2:
                             System.out.println("Your Last Name currently reads: " + GetSurname() + " what would you like to change it to?");
-                            SetSurname(Booking.scanner.nextLine());
+                            SetSurname(scanner.nextLine());
                             System.out.println("Your Last Name now reads as: " + GetSurname());
                             break;
                         case 3:

@@ -14,27 +14,19 @@ import java.util.NoSuchElementException;
 
 
 public class TestingClass extends Utilities {
-    private static String[] positiveDateTestCases = new String[]{"20 12 2023", "31 2 2023", "20 1 2021", "20 12 2024", "10 4 2021", "5 6 2023"};
+    private static String[] positiveDateTestCases = new String[]{"20 12 2023","25 2 2023", "20 1 2021", "20 12 2024", "10 4 2021", "5 6 2023"};
     private static String[] negativeDateTestCases = new String[]{"20,12 ,2023", "40 2 2023", "20 2021 2021", "20 12 21", "a", "hello world"};
-    private static int[] readFileTestCases = new int[]{235768, 122345, 1, 238679};
+    private static int[] readFileTestCases = new int[]{235768, 123542, 1, 238679};
 
     //Test cases for room selection to include the boundary values and enable Boundary Value Analysis testing method.
     private static String[] roomOptionTestCases = new String[]{"0", "1", "2", "3", "4", "5"};
-    private static int[] roomTypeInputCheckTestCases = new int[]{0,1,2,3,4,5};
+    //Test cases for Input check function within the RoomType class.
+    private static int[] roomTypeInputCheckTestCases = new int[]{0, 1, 2, 3, 4, 5};
 
     private static String testData = """
-                James
-                Hirst
-                20
-                12
-                2021
-                24
-                12
-                2021
-                1
-                1
-                Y
-                """;
+            James
+            Hirst
+            """;
 
     private static int valueRoomType = 1;
     private static int deluxeRoomType = 2;
@@ -44,45 +36,47 @@ public class TestingClass extends Utilities {
     public static Trip trip = new Trip();
     //Assigning the PrintStream Object to the standard System.out to resume error messages.
     public static PrintStream originalStream = System.out;
-    //Creating a new PrintStream object to supress error handling within functions during testing.
+
+    /*Creating a new PrintStream object to stop console output within functions during testing.
+    This makes the testing look cleaner. When the System.out is set to the supressed stream no messages will be displayed on the console.
+    this is achieved by overriding the write method.
+     */
+
     public static PrintStream supressedStream = new PrintStream(new OutputStream() {
         @Override
         public void write(int b) throws IOException {
 
         }
     });
-
-
-
     public static void main(String[] args) throws ParseException {
-//        System.out.println("Testing the positive test cases for the date selector function......");
-//        positiveDateSelectorTest();
-//        System.out.println("Testing the negative test cases for the date selector function......");
-//        negativeDateSelectorTest();
-//        System.out.println("Testing that the read existing booking function is able to find valid bookings in the file system......");
-//        readExistingBookingTest();
-//        System.out.println("Testing that the write booking function is able to write valid bookings in the file system......");
-//        writeNewBookingTest();
-//        System.out.println("Testing that the menu for booking manager functions as expected using C, Q, N, c, q, n, l, L ......");
-//        menuOptionTest();
-//        System.out.println("Testing date combinations for Pricing Calculations.....");
-//        priceCalculatorTest();
-//        System.out.println("Testing the RoomType classes to ensure only the correct bedOptions can be selected for the Deluxe RoomType.....");
-//        roomOptionTest();
-//        System.out.println("Testing Value Room Type prints correctly, key function for writing files.....");
-//        roomTypeToStringTest(valueRoomType);
-//        System.out.println("Testing Deluxe Room Type prints correctly, key function for writing files.....");
-//        roomTypeToStringTest(deluxeRoomType);
-//        System.out.println("Testing Superior Room Type prints correctly, key function for writing files.....");
-//        roomTypeToStringTest(superiorRoomType);
-//        System.out.println("Testing Value Room Type checks input correctly.....");
-//        roomTypeInputCheckTest(valueRoomType);
-//        System.out.println("Testing Deluxe Room Type checks input correctly.....");
-//        roomTypeInputCheckTest(deluxeRoomType);
-//        System.out.println("Testing Superior Room Type checks input correctly.....");
-//        roomTypeInputCheckTest(superiorRoomType);
-//        System.out.println("Testing the user inputted name is captured correctly");
-        endtoEndTest();
+        System.out.println("Testing the positive test cases for the date selector function......");
+        positiveDateSelectorTest();
+        System.out.println("Testing the negative test cases for the date selector function......");
+        negativeDateSelectorTest();
+        System.out.println("Testing that the read existing booking function is able to find valid bookings in the file system......");
+        readExistingBookingTest();
+        System.out.println("Testing that the write booking function is able to write valid bookings in the file system......");
+        writeNewBookingTest();
+        System.out.println("Testing that the menu for booking manager functions as expected using C, Q, N, c, q, n, l, L ......");
+        menuOptionTest();
+        System.out.println("Testing date combinations for Pricing Calculations.....");
+        priceCalculatorTest();
+        System.out.println("Testing the RoomType classes to ensure only the correct bedOptions can be selected for the Deluxe RoomType.....");
+        roomOptionTest();
+        System.out.println("Testing Value Room Type prints correctly, key function for writing files.....");
+        roomTypeToStringTest(valueRoomType);
+        System.out.println("Testing Deluxe Room Type prints correctly, key function for writing files.....");
+        roomTypeToStringTest(deluxeRoomType);
+        System.out.println("Testing Superior Room Type prints correctly, key function for writing files.....");
+        roomTypeToStringTest(superiorRoomType);
+        System.out.println("Testing Value Room Type checks input correctly.....");
+        roomTypeInputCheckTest(valueRoomType);
+        System.out.println("Testing Deluxe Room Type checks input correctly.....");
+        roomTypeInputCheckTest(deluxeRoomType);
+        System.out.println("Testing Superior Room Type checks input correctly.....");
+        roomTypeInputCheckTest(superiorRoomType);
+        System.out.println("Testing the name input on the create Trip function");
+        nameInput();
     }
 
     //Testing Date selector works - these results are expected to pass
@@ -108,7 +102,6 @@ public class TestingClass extends Utilities {
             }
         }
         System.out.println(pass + " tests passed out of a total of " + totalTests + " for the positive date selector function.");
-        System.setIn(standard);
     }
 
     //Testing Date selector works - these results are expected to fail
@@ -383,26 +376,26 @@ public class TestingClass extends Utilities {
                         RoomType testType = new ValueRoomType();
                         boolean printedType = testType.inputCheck(testCase);
                         i++;
-                        switch (i){
-                            case 1,5,6:
-                                if(!printedType){
+                        switch (i) {
+                            case 1, 5, 6:
+                                if (!printedType) {
                                     System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
-                                }else{
+                                } else {
                                     System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
                                 }
                                 break;
-                            case 2,3,4:
-                                if(printedType){
+                            case 2, 3, 4:
+                                if (printedType) {
                                     System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
-                                }else{
+                                } else {
                                     System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
                                 }
                                 break;
                         }
 
                     }
-                }catch (NoSuchElementException ignored) {
-                    }
+                } catch (NoSuchElementException ignored) {
+                }
                 break;
             case 2:
                 try {
@@ -412,25 +405,25 @@ public class TestingClass extends Utilities {
                         RoomType testType = new DeluxeRoomType();
                         boolean printedType = testType.inputCheck(testCase);
                         i++;
-                        switch (i){
-                            case 1,6:
-                                if(!printedType){
+                        switch (i) {
+                            case 1, 6:
+                                if (!printedType) {
                                     System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
-                                }else{
+                                } else {
                                     System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
                                 }
                                 break;
-                            case 2,3,4,5:
-                                if(printedType){
+                            case 2, 3, 4, 5:
+                                if (printedType) {
                                     System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
-                                }else{
+                                } else {
                                     System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
                                 }
                                 break;
                         }
 
                     }
-                }catch (NoSuchElementException ignored) {
+                } catch (NoSuchElementException ignored) {
                 }
                 break;
             case 3:
@@ -441,43 +434,55 @@ public class TestingClass extends Utilities {
                         RoomType testType = new SuperiorRoomType();
                         boolean printedType = testType.inputCheck(testCase);
                         i++;
-                        switch (i){
+                        switch (i) {
                             case 1:
-                                if(!printedType){
+                                if (!printedType) {
                                     System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
-                                }else{
+                                } else {
                                     System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
                                 }
                                 break;
-                            case 2,3,4,5,6:
-                                if(printedType){
+                            case 2, 3, 4, 5, 6:
+                                if (printedType) {
                                     System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
-                                }else{
+                                } else {
                                     System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
                                 }
                                 break;
                         }
 
                     }
-                }catch (NoSuchElementException ignored) {
+                } catch (NoSuchElementException ignored) {
                 }
                 break;
         }
     }
-    public static void endtoEndTest() throws ParseException {
+
+
+    /*This function was intended to test the create trip function end to end. But due to the limitations of using a localised
+    scanner, this has not been possible. I created a code branch with a global scanner, but this caused issue amongst other tests.
+    All other functions within the createTrip journey have been individually tested. To test end to end I would declare a global scanner in my
+    main function, use this scanner throughout the code, to individually test the functions I would declare a scanner locally
+    and this would allow me to iterate through a test case list using inputstream.
+     */
+    public static void nameInput() throws ParseException {
         //creating input stream object to simulate user input based on test options
-        InputStream nameEntry = new ByteArrayInputStream(testData.getBytes());
-        System.setIn(nameEntry);
-        Trip testTrip = new Trip();
+        InputStream nameTest = new ByteArrayInputStream(testData.getBytes());
+        System.setIn(nameTest);
         System.setOut(supressedStream);
+        Trip testTrip = new Trip();
+        try{
             testTrip.createTrip();
+        }catch(NoSuchElementException e){
             System.setOut(originalStream);
-            if (testTrip.GetFirstname().equals("James") && (testTrip.GetSurname().equals("Hirst")) && (testTrip.GetCheckedDays() == 4) && (testTrip.GetRoomType().toString().equals("Value Room"))){
-                System.out.println("Test Passed for test data:\n"  + testData + "Please see below how the details are stored in the trip object, using the filename " + testTrip.GetBookingRef()+".txt");
+            if (testTrip.GetFirstname().equals("James") && (testTrip.GetSurname().equals("Hirst"))) {
+                System.out.println("Test Passed for test data:\n" + testData + "Please see below how the details are stored in the trip object, using the filename " + testTrip.GetBookingRef() + ".txt");
                 Utilities.echoDetails(testTrip);
-            }else{
+            } else {
                 System.out.println("Test Failed for test data: " + testData);
             }
+        }
+
     }
 }
 

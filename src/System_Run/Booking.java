@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Scanner;
 
 public class Booking {
-    public static Scanner scanner = new Scanner(System.in);
+
 
     /*Main method instantiates a BookingManager object, which runs the programme after calling the manageBooking method belonging to the object.
         included a throws ParseException due to the dateDifference method - which can throw a parsing exception */
