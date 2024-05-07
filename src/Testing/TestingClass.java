@@ -2,6 +2,7 @@ package Testing;
 
 import RoomTypes.DeluxeRoomType;
 import RoomTypes.RoomType;
+import RoomTypes.SuperiorRoomType;
 import RoomTypes.ValueRoomType;
 import System_Run.Trip;
 import System_Run.BookingManager;
@@ -19,6 +20,24 @@ public class TestingClass extends Utilities {
 
     //Test cases for room selection to include the boundary values and enable Boundary Value Analysis testing method.
     private static String[] roomOptionTestCases = new String[]{"0", "1", "2", "3", "4", "5"};
+    private static int[] roomTypeInputCheckTestCases = new int[]{0,1,2,3,4,5};
+
+    private static String testData = """
+                James
+                Hirst
+                20
+                12
+                2021
+                24
+                12
+                2021
+                """;
+
+    private static int valueRoomType = 1;
+    private static int deluxeRoomType = 2;
+    private static int superiorRoomType = 3;
+    private static InputStream standard = System.in;
+
     public static Trip trip = new Trip();
     //Assigning the PrintStream Object to the standard System.out to resume error messages.
     public static PrintStream originalStream = System.out;
@@ -29,6 +48,8 @@ public class TestingClass extends Utilities {
 
         }
     });
+
+
 
     public static void main(String[] args) throws ParseException {
         System.out.println("Testing the positive test cases for the date selector function......");
@@ -43,14 +64,28 @@ public class TestingClass extends Utilities {
         menuOptionTest();
         System.out.println("Testing date combinations for Pricing Calculations.....");
         priceCalculatorTest();
-        System.out.println("Testing the RoomType classes to ensure only the correct bedOptions can be selected.....");
+        System.out.println("Testing the RoomType classes to ensure only the correct bedOptions can be selected for the Deluxe RoomType.....");
         roomOptionTest();
+        System.out.println("Testing Value Room Type prints correctly, key function for writing files.....");
+        roomTypeToStringTest(valueRoomType);
+        System.out.println("Testing Deluxe Room Type prints correctly, key function for writing files.....");
+        roomTypeToStringTest(deluxeRoomType);
+        System.out.println("Testing Superior Room Type prints correctly, key function for writing files.....");
+        roomTypeToStringTest(superiorRoomType);
+        System.out.println("Testing Value Room Type checks input correctly.....");
+        roomTypeInputCheckTest(valueRoomType);
+        System.out.println("Testing Deluxe Room Type checks input correctly.....");
+        roomTypeInputCheckTest(deluxeRoomType);
+        System.out.println("Testing Superior Room Type checks input correctly.....");
+        roomTypeInputCheckTest(superiorRoomType);
+        System.out.println("Testing the user inputted name is captured correctly");
+        nameEntryTest();
     }
 
+    //Testing Date selector works - these results are expected to pass
     public static void positiveDateSelectorTest() {
         int pass = 0;
         int totalTests = positiveDateTestCases.length;
-        InputStream standard = System.in;
         for (String testCase : positiveDateTestCases) {
             //Using the InputStream object allows me to simulate the entry of User Input for this specific function
             InputStream in = new ByteArrayInputStream(testCase.getBytes());
@@ -73,6 +108,7 @@ public class TestingClass extends Utilities {
         System.setIn(standard);
     }
 
+    //Testing Date selector works - these results are expected to fail
     public static void negativeDateSelectorTest() {
         int pass = 0;
         int totalTests = negativeDateTestCases.length;
@@ -101,6 +137,7 @@ public class TestingClass extends Utilities {
         System.setIn(standard);
     }
 
+    //Testing that existing files in the TripBookings folder can be read.
     public static void readExistingBookingTest() {
         int pass = 0;
         int totalTests = readFileTestCases.length;
@@ -116,6 +153,7 @@ public class TestingClass extends Utilities {
         System.out.println(pass + " tests passed out of a total of " + totalTests + " for the read file test.");
     }
 
+    //Testing that new files can be written using the writeNewBooking function
     public static void writeNewBookingTest() {
         //Instantiating a trip object to test writing and reading using variables in order to make comparisons once written + read.
         String firstname = "James";
@@ -137,6 +175,7 @@ public class TestingClass extends Utilities {
         }
     }
 
+    //Testing the menuOptions presented to the user when the programme is initialised, this is the manage booking function.
     public static void menuOptionTest() throws ParseException {
         //Creating a list of test options
         String options[] = new String[]{"C", "Q", "N", "c", "q", "n", "l", "L"};
@@ -199,6 +238,7 @@ public class TestingClass extends Utilities {
         }
     }
 
+    //Ensuring that the pricing calculator logic runs properly, taking into consideration premium months which tests for membership within an Array.
     public static void priceCalculatorTest() throws ParseException {
         //Creating a new object and adding test data in, pre-requisites of this test are for dates and date difference to be calculated.
         Trip priceTest = new Trip();
@@ -213,14 +253,15 @@ public class TestingClass extends Utilities {
             Utilities.dateDifference(date, date2[i], priceTest);
             double testPrice = Utilities.priceCalculator(priceTest);
             if (testPrice == expectedResult[i]) {
-                System.out.println("Test Passed for test case: " + date + " and " + date2[i] + " with price calculated as " + testPrice + " and expected price of " + expectedResult[i]+"\n");
+                System.out.println("Test Passed for test case: " + date + " and " + date2[i] + " with price calculated as " + testPrice + " and expected price of " + expectedResult[i] + "\n");
             } else {
-                System.out.println("Test Failed for test case: " + date + " and " + date2[i] + " with price calculated as " + testPrice + " and expected price of " + expectedResult[i]+"\n");
+                System.out.println("Test Failed for test case: " + date + " and " + date2[i] + " with price calculated as " + testPrice + " and expected price of " + expectedResult[i] + "\n");
             }
             i++;
         }
     }
 
+    //Ensures that for a given room type, deluxe, the roomOption method only allows appropriate choice for bedOption.
     public static void roomOptionTest() {
         int i = 0;
         String expectedResult;
@@ -234,16 +275,16 @@ public class TestingClass extends Utilities {
             PrintStream printStream = new PrintStream(outputStream);
             System.setOut(printStream);
             try {
-                RoomType testRoom = new DeluxeRoomType();
-                testRoom.roomOption();
+                RoomType testType = new DeluxeRoomType();
+                testType.roomOption();
             } catch (NoSuchElementException ignored) {
             }
             //Reverting system out to standard out, allows me to print the results.
             System.setOut(originalStream);
             String testingOutput = outputStream.toString();
             i++;
-            switch (i){
-                case 1,6:
+            switch (i) {
+                case 1, 6:
                     expectedResult = "Please select a valid option";
                     if (testingOutput.contains(expectedResult)) {
                         System.out.println("Test Passed for test case: " + testCase + " with message " + testingOutput);
@@ -286,6 +327,164 @@ public class TestingClass extends Utilities {
 
             }
         }
+    }
+
+    public static void roomTypeToStringTest(int roomTypeTest) {
+        switch (roomTypeTest) {
+            case 1:
+                try {
+                    RoomType testType = new ValueRoomType();
+                    String printedType = testType.toString();
+                    if (printedType.contains("Value")) {
+                        System.out.println("Test Passed");
+                    } else {
+                        System.out.println("Test Failed");
+                    }
+                } catch (NoSuchElementException ignored) {
+                }
+                break;
+            case 2:
+                try {
+                    RoomType testType = new DeluxeRoomType();
+                    String printedType = testType.toString();
+                    if (printedType.contains("Deluxe")) {
+                        System.out.println("Test Passed");
+                    } else {
+                        System.out.println("Test Failed");
+                    }
+                } catch (NoSuchElementException ignored) {
+                }
+                break;
+            case 3:
+                try {
+                    RoomType testType = new SuperiorRoomType();
+                    String printedType = testType.toString();
+                    if (printedType.contains("Superior")) {
+                        System.out.println("Test Passed");
+                    } else {
+                        System.out.println("Test Failed");
+                    }
+                } catch (NoSuchElementException ignored) {
+                }
+                break;
+        }
+    }
+
+    public static void roomTypeInputCheckTest(int roomTypeTest) {
+        switch (roomTypeTest) {
+            case 1:
+                try {
+                    System.out.println("Testing the Value Room Type input Check");
+                    int i = 0;
+                    for (int testCase : roomTypeInputCheckTestCases) {
+                        RoomType testType = new ValueRoomType();
+                        boolean printedType = testType.inputCheck(testCase);
+                        i++;
+                        switch (i){
+                            case 1,5,6:
+                                if(!printedType){
+                                    System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
+                                }else{
+                                    System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
+                                }
+                                break;
+                            case 2,3,4:
+                                if(printedType){
+                                    System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
+                                }else{
+                                    System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
+                                }
+                                break;
+                        }
+
+                    }
+                }catch (NoSuchElementException ignored) {
+                    }
+                break;
+            case 2:
+                try {
+                    System.out.println("Testing the Deluxe Room Type input Check");
+                    int i = 0;
+                    for (int testCase : roomTypeInputCheckTestCases) {
+                        RoomType testType = new DeluxeRoomType();
+                        boolean printedType = testType.inputCheck(testCase);
+                        i++;
+                        switch (i){
+                            case 1,6:
+                                if(!printedType){
+                                    System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
+                                }else{
+                                    System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
+                                }
+                                break;
+                            case 2,3,4,5:
+                                if(printedType){
+                                    System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
+                                }else{
+                                    System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
+                                }
+                                break;
+                        }
+
+                    }
+                }catch (NoSuchElementException ignored) {
+                }
+                break;
+            case 3:
+                try {
+                    System.out.println("Testing the Superior Room Type input Check");
+                    int i = 0;
+                    for (int testCase : roomTypeInputCheckTestCases) {
+                        RoomType testType = new SuperiorRoomType();
+                        boolean printedType = testType.inputCheck(testCase);
+                        i++;
+                        switch (i){
+                            case 1:
+                                if(!printedType){
+                                    System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
+                                }else{
+                                    System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
+                                }
+                                break;
+                            case 2,3,4,5,6:
+                                if(printedType){
+                                    System.out.println("Test Passed with value " + printedType + " for test case " + testCase);
+                                }else{
+                                    System.out.println("Test Failed with value " + printedType + " for test case " + testCase);
+                                }
+                                break;
+                        }
+
+                    }
+                }catch (NoSuchElementException ignored) {
+                }
+                break;
+        }
+    }
+
+    public static void nameEntryTest() throws ParseException {
+        //creating input stream object to simulate user input based on test options
+        InputStream nameEntry = new ByteArrayInputStream(testData.getBytes());
+        System.setIn(nameEntry);
+        Trip testTrip = new Trip();
+        System.setOut(supressedStream);
+        try{
+            testTrip.createTrip();
+        }catch (NoSuchElementException ignored){
+            System.setOut(originalStream);
+            System.out.println("Test terminates at Date Selection Function, which is tested separately.");
+            if (testTrip.GetFirstname().equals("James") && (testTrip.GetSurname().equals("Hirst"))){
+                System.out.println("Test Passed with firstname " + testTrip.GetFirstname() + " and surname " + testTrip.GetSurname() + "\n test data used: \n firstname: James \n surname: Hirst");
+                System.out.println(testTrip.GetCheckIn());
+            }else{
+                System.out.println("Test Failed" + testTrip.GetFirstname());
+            }
+        }catch (Exception e){
+            System.err.println("Test failed due to "+ e.getMessage());
+        }
+
+
+
     }
 }
 

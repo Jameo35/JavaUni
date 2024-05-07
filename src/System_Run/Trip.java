@@ -20,7 +20,7 @@ public class Trip {
 
     private String _bedOption;
     private double _price;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     //Getters and setters. These allow the retrieval/getting of object information and the updating/setting of the associated variables for an object.
     public int GetBookingRef() {
@@ -118,8 +118,8 @@ public class Trip {
 
     /* The CreateTrip method allows the user to navigate through the trip creation journey.
     This makes use of the scanner class so the user is able to input the desired information into each step of the way.
-     */
-    protected void createTrip() throws ParseException {
+     this method was intended to be protected, however due to testing reasons have designated it as public */
+    public void createTrip() throws ParseException {
         System.out.println("Please enter your first name:");
         _firstname = scanner.nextLine();
 
