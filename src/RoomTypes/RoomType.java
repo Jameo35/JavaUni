@@ -1,6 +1,6 @@
 package RoomTypes;
 
-import System_Run.Booking;
+import System_Run.RunBooking;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -50,6 +50,7 @@ public class RoomType {
     public String toString() {
         return "Value Room";
     }
+
     //created an inputCheck function to ensure correct input is being passed for roomType
     public boolean inputCheck(int option) {
         return (option > 0) && (option < 4);

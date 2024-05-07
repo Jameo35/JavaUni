@@ -5,7 +5,6 @@ import RoomTypes.DeluxeRoomType;
 import RoomTypes.RoomType;
 import RoomTypes.SuperiorRoomType;
 import RoomTypes.ValueRoomType;
-import System_Run.Booking;
 import System_Run.Trip;
 
 import java.io.*;
@@ -56,8 +55,8 @@ public class Utilities {
             scanner.nextLine();
             return null;
         } catch (DateTimeParseException | NullPointerException e) {
-            System.err.println(e.getMessage());
-            System.out.println("Please re-try to enter the booking date to continue the booking process.");
+            System.err.println("Invalid Date Selected");
+            System.out.println("Please re-try to enter a valid booking date to continue the booking process.");
             return null;
         }
     }
@@ -73,10 +72,10 @@ public class Utilities {
                     = checkOutDate.getTime() - checkInDate.getTime();
             int dayDifference = (int) TimeUnit.MILLISECONDS.toDays(difference_In_Time) % 365;
             if (dayDifference < 0) {
-                trip.SetCheckedDays(dayDifference);
+                trip.setCheckedDays(dayDifference);
                 throw new InvalidDateCombinationException();
             } else {
-                trip.SetCheckedDays(dayDifference);
+                trip.setCheckedDays(dayDifference);
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
@@ -88,19 +87,21 @@ public class Utilities {
 
     //Method used to play-back user details gathered via the trip object.
     public static void echoDetails(Trip trip) {
-        System.out.println("Booking Ref: " + trip.GetBookingRef());
-        System.out.println("First Name: " + trip.GetFirstname());
-        System.out.println("Last Name: " + trip.GetSurname());
-        System.out.println("Check In Date: " + trip.GetCheckIn());
-        System.out.println("Check Out Date: " + trip.GetCheckOut());
-        System.out.println("Total Length of Stay: " + trip.GetCheckedDays() + " Days");
-        System.out.println("Room Type: " + trip.GetRoomType());
-        System.out.println("Bed Option: " + trip.GetBedOption());
+        System.out.println("Booking Ref: " + trip.getBookingRef());
+        System.out.println("First Name: " + trip.getFirstname());
+        System.out.println("Last Name: " + trip.getSurname());
+        System.out.println("Check In Date: " + trip.getCheckIn());
+        System.out.println("Check Out Date: " + trip.getCheckOut());
+        System.out.println("Total Length of Stay: " + trip.getCheckedDays() + " Days");
+        System.out.println("Room Type: " + trip.getRoomType());
+        System.out.println("Bed Option: " + trip.getBedOption());
+        System.out.println("Total Price: " + trip.getPrice());
+
     }
 
     //Utility method to write a trip object to an output file. If the parent directory doesn't exist, this method will create the directory.
     public static void writeTripToFile(Trip trip) {
-        String filePath = trip.GetBookingRef() + ".txt";
+        String filePath = trip.getBookingRef() + ".txt";
         File file = new File(DIRECTORY_BANK_ACCOUNTS, filePath);
 
         file.getParentFile().mkdir();
@@ -109,15 +110,14 @@ public class Utilities {
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-            bufferedWriter.write(trip.GetBookingRef() + "\n");
-            bufferedWriter.write(trip.GetFirstname() + "\n");
-            bufferedWriter.write(trip.GetSurname() + "\n");
-            bufferedWriter.write(trip.GetCheckIn() + "\n");
-            bufferedWriter.write(trip.GetCheckOut() + "\n");
-            bufferedWriter.write(trip.GetCheckedDays() + "\n");
-            bufferedWriter.write(trip.GetRoomType() + "\n");
-            bufferedWriter.write(trip.GetBedOption() + "\n");
-
+            bufferedWriter.write(trip.getBookingRef() + "\n");
+            bufferedWriter.write(trip.getFirstname() + "\n");
+            bufferedWriter.write(trip.getSurname() + "\n");
+            bufferedWriter.write(trip.getCheckIn() + "\n");
+            bufferedWriter.write(trip.getCheckOut() + "\n");
+            bufferedWriter.write(trip.getCheckedDays() + "\n");
+            bufferedWriter.write(trip.getRoomType() + "\n");
+            bufferedWriter.write(trip.getBedOption() + "\n");
             bufferedWriter.close();
 
         } catch (IOException e) {
@@ -150,7 +150,6 @@ public class Utilities {
                 roomType = new SuperiorRoomType();
             }
             String BedOption = bufferedReader.readLine();
-
             bufferedReader.close();
             return new Trip(forename, surname, checkIn, CheckOut, CheckedDays, bookingRef, roomType, BedOption);
         } catch (IOException e) {
@@ -189,23 +188,23 @@ public class Utilities {
             case 1:
                 System.out.println("You have selected a Value room, now to choose a bed");
                 _roomType = new ValueRoomType();
-                trip.SetRoomType(_roomType);
+                trip.setRoomType(_roomType);
                 System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed");
-                trip.SetBedOption(_roomType.roomOption());
+                trip.setBedOption(_roomType.roomOption());
                 break;
             case 2:
                 System.out.println("You have selected a Deluxe room, now to choose a bed");
                 _roomType = new DeluxeRoomType();
-                trip.SetRoomType(_roomType);
+                trip.setRoomType(_roomType);
                 System.out.println("Please select from: 1.Single Bed | 2.Twin Bed | 3. Double Bed | 4. Queen Bed");
-                trip.SetBedOption(_roomType.roomOption());
+                trip.setBedOption(_roomType.roomOption());
                 break;
             case 3:
                 System.out.println("You have selected a Superior room, now to choose a bed");
                 _roomType = new SuperiorRoomType();
-                trip.SetRoomType(_roomType);
+                trip.setRoomType(_roomType);
                 System.out.println("Please select from " + Arrays.toString(bedOptions));
-                trip.SetBedOption(_roomType.roomOption());
+                trip.setBedOption(_roomType.roomOption());
                 break;
         }
 
@@ -219,11 +218,11 @@ public class Utilities {
      */
 
     public static double priceCalculator(Trip trip) {
-        int length = trip.GetCheckedDays();
+        int length = trip.getCheckedDays();
         double price = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try {
-            Date checkInDate = sdf.parse(trip.GetCheckIn());
+            Date checkInDate = sdf.parse(trip.getCheckIn());
             int checkInMonth = checkInDate.getMonth() + 1;
             for (int month : premiumMonths) {
                 if (month == checkInMonth) {

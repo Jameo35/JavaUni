@@ -1,4 +1,5 @@
 package RoomTypes;
+
 //Inherited the characteristics of roomType
 public class DeluxeRoomType extends RoomType {
 
@@ -15,6 +16,7 @@ public class DeluxeRoomType extends RoomType {
         }
         return bedOption;
     }
+
     //Overriden the toString function in order to print the name of the roomType without memory address
     @Override
     public String toString() {

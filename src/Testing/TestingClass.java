@@ -244,8 +244,8 @@ public class TestingClass extends Utilities {
         int i = 0;
 
         for (String date : date1) {
-            priceTest.SetCheckIn(date);
-            priceTest.SetCheckOut(date2[i]);
+            priceTest.setCheckIn(date);
+            priceTest.setCheckOut(date2[i]);
             Utilities.dateDifference(date, date2[i], priceTest);
             double testPrice = Utilities.priceCalculator(priceTest);
             if (testPrice == expectedResult[i]) {
@@ -476,7 +476,7 @@ public class TestingClass extends Utilities {
             testTrip.createTrip();
         }catch(NoSuchElementException e){
             System.setOut(originalStream);
-            if (testTrip.GetFirstname().equals("James") && (testTrip.GetSurname().equals("Hirst"))) {
+            if (testTrip.getFirstname().equals("James") && (testTrip.getSurname().equals("Hirst"))) {
                 System.out.println("Test Passed for test data:\n" + testData + "Please see below how the details are stored in the trip object");
                 Utilities.echoDetails(testTrip);
             } else {

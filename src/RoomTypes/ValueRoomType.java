@@ -1,5 +1,5 @@
 package RoomTypes;
 
-public class ValueRoomType extends RoomType{
+public class ValueRoomType extends RoomType {
 
 }

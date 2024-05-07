@@ -1,9 +1,8 @@
 package System_Run;
 
 import java.text.ParseException;
-import java.util.Scanner;
 
-public class Booking {
+public class RunBooking {
 
 
     /*Main method instantiates a BookingManager object, which runs the programme after calling the manageBooking method belonging to the object.

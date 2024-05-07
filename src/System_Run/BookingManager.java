@@ -7,6 +7,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import SystemUtilities.Utilities;
 
+import static SystemUtilities.Utilities.priceCalculator;
+
 public class BookingManager {
 
     //Primary Method to create a System_Run.Trip object, either a new trip, or manage an existing trip, this subsequently creates a new trip object called foundBooking
@@ -35,9 +37,9 @@ public class BookingManager {
                     scanner.nextLine();
                     //ensures booking reference is in acceptable range, custom error handling used to relay information to user upon encountering any errors.
                     if (BookingRef < 100000)
-                        throw new InvalidBookingRefException("Booking Reference was less than 100000 please try again with another Reference. System_Run.Booking Ref: ", BookingRef);
+                        throw new InvalidBookingRefException("Booking Reference was less than 100000 please try again with another Reference. Booking Ref: ", BookingRef);
                     else if (BookingRef > 999999)
-                        throw new InvalidBookingRefException("Booking Reference was more than 999999, please try again with another Reference. System_Run.Booking Ref: ", BookingRef);
+                        throw new InvalidBookingRefException("Booking Reference was more than 999999, please try again with another Reference. Booking Ref: ", BookingRef);
 
                     /*This instantiates a Trip object called foundbooking. The ReadTripData function is called, this searches the project's directory.
                     if the .txt file is found in the directory an object is created and populated with data using the object constructor on a line by line basis */
@@ -48,6 +50,7 @@ public class BookingManager {
                     if (foundBooking == null)
                         throw new InvalidBookingRefException("Booking was not found, returning to the Menu. Booking Ref: ", BookingRef);
 
+                    foundBooking.setPrice(priceCalculator(foundBooking));
 
                     System.out.println("Booking Found with details: ");
                     //Call to echoDetails function which relays object information back to user.
@@ -59,7 +62,7 @@ public class BookingManager {
                             foundBooking.changeTrip();
                             break;
                         } else if (changes.equals("n")) {
-                            System.out.println("No Changes have been made to booking: " + foundBooking.GetBookingRef());
+                            System.out.println("No Changes have been made to booking: " + foundBooking.getBookingRef());
                             break;
                         } else {
                             System.out.println("Please select a valid menu option");
